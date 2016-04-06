@@ -1,0 +1,54 @@
+{% extends 'AppFrontEndBundle:Default:base.html.twig' %}
+
+{% block body %}
+    <div class="container common-wrapper">
+        <nav>
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <ul class="left hide-on-med-and-down">
+                        <li><a href="#/" data-ng-class="">Home</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div data-ng-view></div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        var appConfig = {
+            'apiUrl': "{{ url('api_base') }}",
+            'jsUrl': "/bundles/appfrontend/js",
+            'recaptchaClientKey': "{{ recaptcha_client_key }}"
+        }
+    </script>
+    {% javascripts
+        "../node_modules/jquery/dist/jquery.min.js"
+        "../node_modules/angular/angular.js"
+        "../node_modules/angular-route/angular-route.min.js"
+        "../node_modules/materialize-css/dist/js/materialize.min.js"
+        "../node_modules/angular-recaptcha/release/angular-recaptcha.min.js"
+
+        output='js/vendor_all.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts
+        "@AppFrontEndBundle/Resources/public/js/app.module.js"
+        "@AppFrontEndBundle/Resources/public/js/app.config.js"
+
+        "@AppFrontEndBundle/Resources/public/js/**/*.module.js"
+        "@AppFrontEndBundle/Resources/public/js/**/*.config.js"
+        "@AppFrontEndBundle/Resources/public/js/**/*.service.js"
+        "@AppFrontEndBundle/Resources/public/js/**/*.factory.js"
+        "@AppFrontEndBundle/Resources/public/js/**/*.controller.js"
+        "@AppFrontEndBundle/Resources/public/js/**/*.directive.js"
+
+        output='js/app_all.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+{% endblock %}

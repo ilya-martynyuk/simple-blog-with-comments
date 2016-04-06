@@ -1,0 +1,14 @@
+services:
+  forms.entity_form_factory:
+      class: AppApiBundle\Services\EntityFormFactory
+
+  forms.entity_form:
+      class: AppApiBundle\Services\EntityForm
+      factory: ['@forms.entity_form_factory', createEntityForm]
+      arguments: [ "@service_container" ]
+
+  app.recaptcha:
+      class: AppApiBundle\Services\ReCaptcha
+      arguments: [ "%app_api.recaptcha_secret_key%" ]
+      calls:
+          - [ setContainer,[ "@service_container" ] ]

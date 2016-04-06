@@ -1,0 +1,19 @@
+{
+  "name": "simple_blog",
+  "version": "1.0.0",
+  "description": "tm_t ====",
+  "main": "index.js",
+  "dependencies": {
+    "angular": "^1.5.3",
+    "angular-recaptcha": "^2.5.0",
+    "angular-route": "^1.5.3",
+    "jquery": "^2.2.2",
+    "materialize-css": "^0.97.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "imartynyuk",
+  "license": "ISC"
+}

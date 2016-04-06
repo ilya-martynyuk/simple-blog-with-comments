@@ -1,0 +1,112 @@
+<h4 data-ng-bind="article.title"></h4>
+
+<div class="progress" data-ng-if="articleLoading">
+    <div class="indeterminate"></div>
+</div>
+
+<div data-ng-bind="article.content"></div>
+
+<div class="article-comments" data-ng-show="!articleLoading">
+    <h5>Comments:</h5>
+
+    <div class="progress" data-ng-if="commentsLoading">
+        <div class="indeterminate"></div>
+    </div>
+
+    <div data-ng-repeat="comment in comments">
+        <div data-ng-include="'comment_template'"></div>
+    </div>
+
+    <i data-ng-if="comments.length===0 && !commentsLoading">There are no comments yet</i>
+</div>
+
+<div data-ng-show="!articleLoading">
+    <h5 data-ng-if="commentToPost.parentId.length===0">Post a comment:</h5>
+    <h5 data-ng-if="commentToPost.parentId.length!==0">Post a reply:</h5>
+    <a href="javascript:void(0)"
+       data-ng-click="closeReply()"
+       data-ng-if="commentToPost.parentId.length!==0">Close reply</a>
+
+    <div data-ng-include="'comment_form_template'"></div>
+</div>
+
+<script type="text/ng-template"  id="comment_template">
+    <div>
+        <i>{{ formatDate(comment.created.date) |date:'MMM d, y H:mm:ss' }}, <b>{{ comment.userName }}</b> said</i>:<br>
+        {{ comment.text }}<br>
+        <div data-ng-if="comment.lvl < 5">
+            <a href="javascript:void(0)"
+               data-ng-click="replyComment(comment.id)">Reply</a>
+        </div>
+    </div>
+
+    <div class="reply-form-place-{{comment.id}}"></div>
+
+    <div class="row comment-children" data-ng-if="comment.__children && comment.__children.length!==0">
+        <div class="col s11 offset-s1" data-ng-repeat="comment in comment.__children">
+            <div data-ng-include="'comment_template'"></div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template"  id="comment_form_template">
+    <div class="row">
+        <form name="forms.userForm" id="post-comment-form" class="col s12 m6" data-ng-submit="postComment()">
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="name" type="text" class="validate"
+                           data-ng-model="commentToPost.userName" required>
+                    <label for="name">Name</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="email" type="email" class="validate"
+                           data-ng-model="commentToPost.userEmail" required>
+                    <label for="email">Email</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                <textarea id="post-comment-form-text" name="text" class="materialize-textarea"
+                      data-ng-model="commentToPost.text" required></textarea>
+                    <label for="post-comment-form-text">Text</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <div data-vc-recaptcha
+                         data-on-create="setRecaptchaWidgetId(widgetId)"
+                         data-ng-model="commentToPost.reCaptchaResponse"
+                         data-type="image"
+                         data-key="'6LdXpRwTAAAAAP3YGZYdFMq_NIG8mjpJV1mbsk7k'"></div>
+                </div>
+                <div class="col s12" data-ng-if="reCaptchaError">
+                    Captcha verification failed, please try again...
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12 m5">
+                    <button class="btn waves-effect waves-light" type="submit" name="action" data-ng-disabled="commentPosting">Submit<i class="material-icons right">send</i>
+                    </button>
+                </div>
+                <div class=" col s12 m6"
+                        data-ng-if="commentPosting!==false">
+                    <div class="preloader-wrapper small active">
+                        <div class="spinner-layer spinner-green-only">
+                            <div class="circle-clipper left">
+                                <div class="circle"></div>
+                            </div><div class="gap-patch">
+                            <div class="circle"></div>
+                            </div><div class="circle-clipper right">
+                                <div class="circle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</script>
