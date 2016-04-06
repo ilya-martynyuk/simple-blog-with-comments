@@ -5,7 +5,7 @@
      * @ngdoc module
      * @name app
      *
-     * @requires ui.router
+     * @requires vcRecaptcha
      *
      * @description
      * Common application module
