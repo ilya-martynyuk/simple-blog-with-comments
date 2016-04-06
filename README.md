@@ -19,3 +19,7 @@ Load fixtures:
 
     bin/console doctrine:fixtures:load
     
+Also you should install [Npm](https://www.npmjs.com/) packages (npm is used instead of Bower):
+
+    npm install
+    
