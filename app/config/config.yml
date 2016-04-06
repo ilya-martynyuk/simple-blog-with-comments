@@ -102,3 +102,4 @@ stof_doctrine_extensions:
 app_api:
     recaptcha_secret_key: "%recaptcha_secret_key%"
     recaptcha_client_key: "%recaptcha_client_key%"
+    recaptcha_expiration_time: "%recaptcha_expiration_time%"

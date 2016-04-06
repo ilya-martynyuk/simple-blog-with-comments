@@ -20,6 +20,10 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('recaptcha_client_key')
                     ->cannotBeEmpty()
                 ->end()
+                ->scalarNode('recaptcha_expiration_time')
+                    ->info('Time in secconds while recaptcha will not start processing')
+                    ->defaultValue(120)
+                ->end()
             ->end()
         ;
 

@@ -20,3 +20,4 @@ parameters:
 
     recaptcha_secret_key: ~
     recaptcha_client_key: ~
+    recaptcha_expiration_time: 360

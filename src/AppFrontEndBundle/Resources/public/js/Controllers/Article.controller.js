@@ -85,14 +85,14 @@
          *
          * @link https://github.com/VividCortex/angular-recaptcha
          */
-        $scope.recaptchaWidgetId;
+        $scope.recaptchaWidgetId = '';
 
         /**
          * Recaptchaclient key.
          *
          * @link https://github.com/VividCortex/angular-recaptcha
          */
-        $scope.recaptchaClientKey = appConfig.recaptcha_client_key;
+        $scope.reCaptchaClientKey = appConfig.recaptcha_client_key;
 
         /**
          * Flag which means that captcha returned an error.
@@ -100,6 +100,8 @@
          * @type {boolean}
          */
         $scope.reCaptchaError = false;
+
+        $scope.showRecaptcha = true;
 
         /**
          * Contains data of comment to post.
@@ -157,14 +159,16 @@
             articlesService
                 .postComment($scope.article.id, $scope.commentToPost)
                 .then(function(){
-                   __clearCommentForm();
+                    __clearCommentForm();
                     __loadComments();
+
+                    $scope.showRecaptcha = false;
                     $scope.commentPosting = false;
                 }, function(response){
-
                     if (response.status === 400 && response.data.errors.reCaptchaResponse) {
                         vcRecaptchaService.reload($scope.recaptchaWidgetId);
                         $scope.reCaptchaError = true;
+                        $scope.showRecaptcha = true;
 
                         setTimeout(function(){
                             $scope.reCaptchaError = false;

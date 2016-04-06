@@ -80,17 +80,19 @@ class ArticleCommentsController extends Controller
             ->container
             ->get('app.recaptcha');
 
-        $reCaptchaIsValid = $reCaptchaService
-            ->verifyCode(
-                $request
-                    ->get('reCaptchaResponse')
-            );
+        if (!$reCaptchaService->isCaptchaVerified()) {
+            $reCaptchaIsValid = $reCaptchaService
+                ->verifyCode(
+                    $request
+                        ->get('reCaptchaResponse')
+                );
 
-        // Checks that captcha code is valid.
-        if (!$reCaptchaIsValid) {
-            return new JsonResponse([
-                'errors' => ['reCaptchaResponse' => 'Code is not valid']
-            ], Response::HTTP_BAD_REQUEST);
+            // Checks that captcha code is valid.
+            if (!$reCaptchaIsValid) {
+                return new JsonResponse([
+                    'errors' => ['reCaptchaResponse' => 'Code is not valid']
+                ], Response::HTTP_BAD_REQUEST);
+            }
         }
 
         // Loads data from request into comment entity.

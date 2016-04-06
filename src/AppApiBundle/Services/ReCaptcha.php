@@ -20,6 +20,13 @@ class ReCaptcha implements ContainerAwareInterface
     const API_URL = 'https://www.google.com/recaptcha/api/siteverify';
 
     /**
+     * During this time we will not werify recaptcha from current user.
+     *
+     * @var
+     */
+    protected $expirationTime;
+
+    /**
      * Recaptcha api seecret key.
      *
      * @var Api
@@ -37,10 +44,12 @@ class ReCaptcha implements ContainerAwareInterface
      * ReCaptcha constructor.
      *
      * @param $apiSecret Api secret key
+     * @param $expirationTime Recaptcha expiration time.
      */
-    public function __construct($apiSecret)
+    public function __construct($apiSecret, $expirationTime)
     {
         $this->apiSecret = $apiSecret;
+        $this->expirationTime = $expirationTime;
     }
 
     /**
@@ -49,6 +58,27 @@ class ReCaptcha implements ContainerAwareInterface
     public function setContainer(ContainerInterface $container = null)
     {
         $this->container = $container;
+    }
+
+    /**
+     * Checks whether user is already verified last time.
+     *
+     * @return bool
+     */
+    public function isCaptchaVerified()
+    {
+        $lastVerifyTime = $this
+            ->container
+            ->get('session')
+            ->get('reCaptchaVerifiedAt');
+
+        $currentTime = time();
+
+        if (!$lastVerifyTime || $currentTime > $lastVerifyTime + $this->expirationTime) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -78,6 +108,11 @@ class ReCaptcha implements ContainerAwareInterface
         curl_close($ch);
 
         if ($response->success) {
+            $this
+                ->container
+                ->get('session')
+                ->set('reCaptchaVerifiedAt', time());
+
             return true;
         }
 

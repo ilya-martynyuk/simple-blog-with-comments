@@ -7,6 +7,7 @@
             '$routeProvider',
             '$httpProvider',
             '$locationProvider',
+            'vcRecaptchaServiceProvider',
             moduleConfig
         ]);
 
@@ -19,8 +20,10 @@
      * @param $routeProvider
      * @param $httpProvider
      * @param $locationProvider
+     * @param vcRecaptchaServiceProvider
      */
-    function moduleConfig($routeProvider, $httpProvider, $locationProvider) {
+    function moduleConfig($routeProvider, $httpProvider, $locationProvider, vcRecaptchaServiceProvider) {
+
         $httpProvider
             .defaults
             .headers

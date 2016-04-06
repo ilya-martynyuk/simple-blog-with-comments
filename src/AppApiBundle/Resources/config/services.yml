@@ -5,10 +5,10 @@ services:
   forms.entity_form:
       class: AppApiBundle\Services\EntityForm
       factory: ['@forms.entity_form_factory', createEntityForm]
-      arguments: [ "@service_container" ]
+      arguments: ["@service_container"]
 
   app.recaptcha:
       class: AppApiBundle\Services\ReCaptcha
-      arguments: [ "%app_api.recaptcha_secret_key%" ]
+      arguments: ["%app_api.recaptcha_secret_key%", "%app_api.recaptcha_expiration_time%"]
       calls:
-          - [ setContainer,[ "@service_container" ] ]
+          - [setContainer,["@service_container"]]

@@ -24,6 +24,7 @@ class AppApiExtension extends Extension
 
         $container->setParameter('app_api.recaptcha_secret_key', $configs[0]['recaptcha_secret_key']);
         $container->setParameter('app_api.recaptcha_client_key', $configs[0]['recaptcha_client_key']);
+        $container->setParameter('app_api.recaptcha_expiration_time', $configs[0]['recaptcha_expiration_time']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
