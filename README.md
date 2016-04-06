@@ -7,11 +7,15 @@ Materialize is used as common CSS framework.
 
 Instalation guide
 -----------------
-Install composer pacjages:
-  composer install --dev
+Install [Composer](http://getcomposer.org/) packages:
 
-Install DB tables:
-  bin/console doctrine:schema:update --force
+    composer install --dev
+
+Install DB schema data:
+
+    bin/console doctrine:schema:update --force
 
 Load fixtures:
-  bin/console doctrine:fixtures:load
+
+    bin/console doctrine:fixtures:load
+    
