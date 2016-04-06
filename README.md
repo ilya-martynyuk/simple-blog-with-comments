@@ -5,13 +5,13 @@ Symfony3 is used as REST api. AngularJs as client.
 Implemented nested comments and recaptcha.
 Materialize is used as common CSS framework.
 
-### Instalation
+Instalation guide
+-----------------
+Install composer pacjages:
+  composer install --dev
 
-- Install composer pacjages:
-composer install
+Install DB tables:
+  bin/console doctrine:schema:update --force
 
-- Intall DB tables:
-bin/console doctrine:schema:update --force
-
-- Load fixtures:
-bin/console doctrine:fixtures:load
+Load fixtures:
+  bin/console doctrine:fixtures:load
