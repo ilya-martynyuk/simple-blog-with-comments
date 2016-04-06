@@ -1,4 +1,6 @@
-tm_t
+Simple blog implementation made on Symfony3 and AngularJs
 ====
 
-A Symfony project created on March 31, 2016, 10:10 am.
+Symfony3 is used as REST api. AngularJs as client.
+Implemented nested comments and recaptcha.
+Materialize is used as common CSS framework.
