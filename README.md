@@ -19,7 +19,13 @@ Load fixtures:
 
     bin/console doctrine:fixtures:load
     
-Also you should install [Npm](https://www.npmjs.com/) packages (npm is used instead of Bower):
+
+Starting application (specify port hich you want):
+
+    bin/console server:start 127.0.0.1:8080 --docroot ./public_html
+
+    
+For development, you should also install [Npm](https://www.npmjs.com/) packages (npm is used instead of Bower):
 
     npm install
     
