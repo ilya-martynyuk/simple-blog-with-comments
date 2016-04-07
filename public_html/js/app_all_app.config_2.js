@@ -3,13 +3,8 @@
 
     angular
         .module('app')
-        .config([
-            '$routeProvider',
-            '$httpProvider',
-            '$locationProvider',
-            'vcRecaptchaServiceProvider',
-            moduleConfig
-        ]);
+        .config(
+            moduleConfig);
 
     /**
      * @ngdoc function
@@ -23,6 +18,8 @@
      * @param vcRecaptchaServiceProvider
      */
     function moduleConfig($routeProvider, $httpProvider, $locationProvider, vcRecaptchaServiceProvider) {
+        vcRecaptchaServiceProvider
+            .setSiteKey(appConfig.recaptchaClientKey);
 
         $httpProvider
             .defaults
