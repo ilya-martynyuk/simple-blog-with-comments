@@ -1,15 +1,15 @@
 <h4 data-ng-bind="article.title"></h4>
 
-<div class="progress" data-ng-if="articleLoading">
+<div class="progress" data-ng-if="flags.loadingArticle">
     <div class="indeterminate"></div>
 </div>
 
 <div data-ng-bind="article.content"></div>
 
-<div class="article-comments" data-ng-show="!articleLoading">
+<div class="article-comments" data-ng-show="!flags.loadingArticle">
     <h5>Comments:</h5>
 
-    <div class="progress" data-ng-if="commentsLoading">
+    <div class="progress" data-ng-if="flags.loadingComments">
         <div class="indeterminate"></div>
     </div>
 
@@ -17,10 +17,10 @@
         <div data-ng-include="'comment_template'"></div>
     </div>
 
-    <i data-ng-if="comments.length===0 && !commentsLoading">There are no comments yet</i>
+    <i data-ng-if="comments.length===0 && !flags.loadingComments">There are no comments yet</i>
 </div>
 
-<div data-ng-show="!articleLoading">
+<div data-ng-show="!flags.loadingArticle">
     <h5 data-ng-if="commentToPost.parentId.length===0">Post a comment:</h5>
     <h5 data-ng-if="commentToPost.parentId.length!==0">Post a reply:</h5>
     <a href="javascript:void(0)"
@@ -74,26 +74,22 @@
                 </div>
             </div>
 
-            <div class="row" data-ng-if="showRecaptcha">
+            <div class="row" data-ng-show="showRecaptcha">
                 <div class="col s12">
                     <div data-vc-recaptcha
                          data-on-create="setRecaptchaWidgetId(widgetId)"
-                         data-ng-model="commentToPost.reCaptchaResponse"
-                         data-type="image"
-                         data-key="'6LdXpRwTAAAAAP3YGZYdFMq_NIG8mjpJV1mbsk7k'"></div>
-                </div>
-                <div class="col s12" data-ng-if="reCaptchaError">
-                    Captcha verification failed, please try again...
+                         data-ng-model="commentToPost.reCaptchaResponse"></div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col s12 m5">
-                    <button class="btn waves-effect waves-light" type="submit" name="action" data-ng-disabled="commentPosting">Submit<i class="material-icons right">send</i>
+                    <button class="btn waves-effect waves-light" type="submit" name="action"
+                            data-ng-disabled="flags.postingComment">Submit<i class="material-icons right">send</i>
                     </button>
                 </div>
                 <div class=" col s12 m6"
-                        data-ng-if="commentPosting!==false">
+                        data-ng-if="flags.postingComment!==false">
                     <div class="preloader-wrapper small active">
                         <div class="spinner-layer spinner-green-only">
                             <div class="circle-clipper left">

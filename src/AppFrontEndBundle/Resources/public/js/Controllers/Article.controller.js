@@ -60,48 +60,15 @@
         $scope.comments = [];
 
         /**
-         * Flag means that article is loading in the moment.
-         *
-         * @type {boolean}
-         */
-        $scope.articleLoading = true;
-
-        /**
-         * Flag means that article's comments are loading in the moment.
-         *
-         * @type {boolean}
-         */
-        $scope.commentsLoading = true;
-
-        /**
-         * Flag means that comment is posting in the moment.
-         *
-         * @type {boolean}
-         */
-        $scope.commentPosting = false;
-
-        /**
          * Contains recaptcha widget id. Used for reloading of recaptcha widget,
          *
          * @link https://github.com/VividCortex/angular-recaptcha
          */
         $scope.recaptchaWidgetId = '';
 
-        /**
-         * Recaptchaclient key.
-         *
-         * @link https://github.com/VividCortex/angular-recaptcha
-         */
-        $scope.reCaptchaClientKey = appConfig.recaptcha_client_key;
-
-        /**
-         * Flag which means that captcha returned an error.
-         *
-         * @type {boolean}
-         */
-        $scope.reCaptchaError = false;
-
-        $scope.showRecaptcha = true;
+        if (typeof $rootScope.showRecaptcha === 'undefined') {
+            $rootScope.showRecaptcha = true;
+        }
 
         /**
          * Contains data of comment to post.
@@ -142,9 +109,20 @@
             return dateOut;
         };
 
+        $scope.flags = {
+            // Flag means that comment is posting in the moment.
+            postingComment: false,
+
+            // Flag means that article is loading in the moment.
+            loadingArticle: true,
+
+            // Flag means that article's comments are loading in the moment.
+            loadingComments: false
+        };
+
         $scope.setRecaptchaWidgetId = function(widgetId) {
             $scope.recaptchaWidgetId = widgetId;
-        }
+        };
 
         /**
          * Posts new comment or reply,
@@ -154,7 +132,7 @@
                 return;
             }
 
-            $scope.commentPosting = true;
+            $scope.flags.postingComment = true;
 
             articlesService
                 .postComment($scope.article.id, $scope.commentToPost)
@@ -162,21 +140,18 @@
                     __clearCommentForm();
                     __loadComments();
 
-                    $scope.showRecaptcha = false;
-                    $scope.commentPosting = false;
+                    // User is not a robot.
+                    $rootScope.showRecaptcha = false;
+                    $scope.flags.postingComment = false;
                 }, function(response){
                     if (response.status === 400 && response.data.errors.reCaptchaResponse) {
-                        vcRecaptchaService.reload($scope.recaptchaWidgetId);
-                        $scope.reCaptchaError = true;
-                        $scope.showRecaptcha = true;
+                        vcRecaptchaService
+                            .reload($scope.recaptchaWidgetId);
 
-                        setTimeout(function(){
-                            $scope.reCaptchaError = false;
-                            $scope.$apply();
-                        }, 5000);
+                        $rootScope.showRecaptcha = true;
                     }
 
-                    $scope.commentPosting = false;
+                    $scope.flags.postingComment = false;
                 });
         }
 
@@ -215,7 +190,7 @@
                 .getComments(articleId)
                 .then(function(response, status) {
                     $scope.comments = response.data;
-                    $scope.commentsLoading = false;
+                    $scope.flags.loadingComments = false;
                 });
         }
 
@@ -246,7 +221,7 @@
                 $scope.article = response.data;
                 $rootScope.title += ' - ' + response.data.title;
                 $scope.commentToPost.articleId = response.data.id;
-                $scope.articleLoading = false;
+                $scope.flags.loadingArticle = false;
 
                 __loadComments();
             }, function(response){
